@@ -1,0 +1,6 @@
+{
+  "name": "Market - Multi Trading Marketplace",
+  "description": "A complete multi-vendor trading marketplace e-commerce website with category mega-menus, daily deals countdown, trending items catalog, interactive cart drawer, wishlist, and comparison features.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
