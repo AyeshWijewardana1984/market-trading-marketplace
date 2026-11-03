@@ -3871,6 +3871,43 @@ export const AdminBackendView: React.FC<AdminBackendViewProps> = ({
                 <div className="text-emerald-400">$ npm start</div>
               </div>
 
+              {/* GitHub Repository Sync Info */}
+              <div className="bg-[#0b1120] border border-slate-800 rounded-xl p-5 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-amber-400 font-bold text-xs uppercase font-display flex items-center gap-1.5">
+                      <Globe className="w-4 h-4 text-emerald-400" />
+                      Connected GitHub Repository
+                    </span>
+                    <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] font-bold px-2 py-0.5 rounded font-mono">
+                      SYNCHRONIZED (main)
+                    </span>
+                  </div>
+                  <a
+                    href="https://github.com/AyeshWijewardana1984/market-trading-marketplace"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-2.5 py-1 rounded flex items-center gap-1 transition-colors"
+                  >
+                    <span>Open GitHub Repo</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+
+                <div className="text-xs text-slate-300 leading-relaxed">
+                  Remote URL: <code className="text-amber-300 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">https://github.com/AyeshWijewardana1984/market-trading-marketplace.git</code>
+                </div>
+
+                <div className="bg-slate-950 p-3 rounded-lg border border-slate-800/80 font-mono text-[11px] text-slate-300 space-y-1">
+                  <div className="text-slate-500"># How to push new updates to GitHub anytime:</div>
+                  <div className="text-slate-400"># 1. Ask in AI Studio chat: "push changes to github" (automatic!)</div>
+                  <div className="text-slate-400 mt-1"># 2. Or from your local terminal:</div>
+                  <div className="text-white">$ git add .</div>
+                  <div className="text-white">$ git commit -m "Update features"</div>
+                  <div className="text-emerald-400">$ git push origin main</div>
+                </div>
+              </div>
+
               {/* Endpoint Reference Table */}
               <div className="bg-[#11192d] rounded-xl border border-slate-800 overflow-hidden shadow-sm">
                 <div className="p-4 border-b border-slate-800 font-bold text-xs uppercase font-display text-white">
