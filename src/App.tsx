@@ -482,6 +482,14 @@ export default function App() {
       <NavigationBar
         categoryMenuOpen={categoryMenuOpen}
         onToggleCategoryMenu={() => setCategoryMenuOpen(!categoryMenuOpen)}
+        selectedCategory={selectedCategory}
+        onSelectCategory={(cat) => {
+          setSelectedCategory(cat);
+          setSearchQuery('');
+          addToast(language === 'si' ? `පෙරහන යොදන ලදී: ${cat}` : `Filter applied: ${cat}`, 'info');
+          const el = document.getElementById('trending-section');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }}
         activeNav={activeNav}
         onSelectNav={handleSelectNav}
         language={language}
@@ -494,6 +502,7 @@ export default function App() {
         onOpenPages={() => handleOpenPages('about')}
         onOpenAdminDashboard={handleOpenAdminView}
         onOpenMobileDrawer={() => setMobileDrawerOpen(true)}
+        isHomepage={!viewingProduct}
       />
 
       {/* 2. Main Content Area */}

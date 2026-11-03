@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
-import { Menu, ChevronDown, Sparkles, Globe, ShieldCheck } from 'lucide-react';
-import { Language } from '../../types/marketplace';
+import React, { useState, useEffect } from 'react';
+import { Menu, ChevronDown, ChevronRight, Sparkles, Globe, ShieldCheck } from 'lucide-react';
+import { CategoryItem, Language } from '../../types/marketplace';
 import { t } from '../../i18n/translations';
+import { getStoredDepartments, subscribeToDepartments } from '../../services/departmentService';
+import { DepartmentIcon } from '../Common/DepartmentIcon';
 
 interface NavigationBarProps {
   categoryMenuOpen: boolean;
   onToggleCategoryMenu: () => void;
+  selectedCategory?: string;
+  onSelectCategory?: (category: string) => void;
   activeNav: string;
   onSelectNav: (nav: string) => void;
   language: Language;
@@ -18,11 +22,14 @@ interface NavigationBarProps {
   onOpenPages: () => void;
   onOpenAdminDashboard: () => void;
   onOpenMobileDrawer?: () => void;
+  isHomepage?: boolean;
 }
 
 export const NavigationBar: React.FC<NavigationBarProps> = ({
   categoryMenuOpen,
   onToggleCategoryMenu,
+  selectedCategory,
+  onSelectCategory,
   activeNav,
   onSelectNav,
   language,
@@ -35,9 +42,20 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({
   onOpenPages,
   onOpenAdminDashboard,
   onOpenMobileDrawer,
+  isHomepage = true,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredNav, setHoveredNav] = useState<string | null>(null);
+  const [departments, setDepartments] = useState<CategoryItem[]>(() => getStoredDepartments());
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+
+  useEffect(() => {
+    setDepartments(getStoredDepartments());
+    const unsubscribe = subscribeToDepartments((latest) => {
+      setDepartments(latest);
+    });
+    return unsubscribe;
+  }, []);
 
   const navItems = [
     { id: 'HOME', label: language === 'si' ? 'මුල් පිටුව' : 'HOME' },
@@ -63,21 +81,109 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({
     <div className="bg-[#0c1524] border-b border-[#1b293e] sticky top-0 z-40 shadow-md">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 flex items-stretch justify-between h-10">
         {/* Left: Orange ALL DEPARTMENT Trigger Button (aligns with 280px sidebar) */}
-        <div className="w-[260px] lg:w-[280px] shrink-0">
+        <div className="w-[240px] sm:w-[260px] lg:w-[280px] shrink-0 relative">
           <button
             onClick={onToggleCategoryMenu}
-            className="w-full h-full bg-[#ea580c] hover:bg-[#c2410c] text-white px-4 font-bold text-xs uppercase tracking-wider flex items-center justify-between cursor-pointer transition-colors shadow-sm font-display"
+            className="w-full h-full bg-[#ea580c] hover:bg-[#c2410c] text-white px-3 sm:px-4 font-bold text-xs uppercase tracking-wider flex items-center justify-between cursor-pointer transition-colors shadow-sm font-display select-none"
+            aria-expanded={categoryMenuOpen}
+            aria-label="Toggle all departments menu"
           >
-            <div className="flex items-center gap-2.5">
-              <Menu className="w-5 h-5" />
-              <span>{t('allDepartmentsBtn', language)}</span>
+            <div className="flex items-center gap-2 truncate">
+              <Menu className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+              <span className="truncate">{t('allDepartmentsBtn', language)}</span>
             </div>
             <ChevronDown
-              className={`w-4 h-4 transition-transform duration-200 ${
+              className={`w-4 h-4 shrink-0 transition-transform duration-200 ${
                 categoryMenuOpen ? 'rotate-180' : ''
               }`}
             />
           </button>
+
+          {/* Floating Dropdown Mega-Menu directly below the button */}
+          {categoryMenuOpen && (
+            <>
+              {/* Backdrop dismiss */}
+              <div
+                className={`fixed inset-0 z-40 ${isHomepage ? 'lg:hidden' : 'block'}`}
+                onClick={onToggleCategoryMenu}
+              />
+              <div className={`absolute top-full left-0 w-full bg-white border border-slate-200 border-t-0 shadow-2xl rounded-b-md z-50 animate-in fade-in duration-150 max-h-[75vh] overflow-y-auto ${
+                isHomepage ? 'lg:hidden' : 'block'
+              }`}>
+                <ul className="divide-y divide-slate-100 text-xs text-slate-700 font-medium">
+                  {departments.map((cat) => {
+                    const catName = language === 'si' && cat.nameSi ? cat.nameSi : cat.name;
+                    const isSelected = selectedCategory === cat.name || selectedCategory === cat.nameSi;
+                    const isHovered = hoveredCategory === cat.id;
+                    const subcategories = language === 'si' && cat.subcategoriesSi ? cat.subcategoriesSi : cat.subcategories;
+
+                    return (
+                      <li
+                        key={cat.id}
+                        className="relative group"
+                        onMouseEnter={() => setHoveredCategory(cat.id)}
+                        onMouseLeave={() => setHoveredCategory(null)}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (onSelectCategory) {
+                              onSelectCategory(cat.name);
+                            }
+                            onToggleCategoryMenu();
+                          }}
+                          className={`w-full px-3 py-2.5 flex items-center justify-between text-left transition-colors cursor-pointer group-hover:bg-slate-50 group-hover:text-[#ea580c] ${
+                            isSelected
+                              ? 'bg-orange-50/70 text-[#ea580c] font-semibold border-l-3 border-[#ea580c]'
+                              : 'border-l-3 border-transparent'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2 truncate">
+                            <div className="text-slate-400 group-hover:text-[#ea580c] transition-colors shrink-0">
+                              <DepartmentIcon iconName={cat.iconName} className="w-4 h-4" />
+                            </div>
+                            <span className="truncate">{catName}</span>
+                          </div>
+                          <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#ea580c] shrink-0 transition-colors" />
+                        </button>
+
+                        {/* Flyout Submenu on Hover (Desktop) */}
+                        {isHovered && subcategories && subcategories.length > 0 && (
+                          <div className="hidden lg:block absolute left-full top-0 ml-[-1px] w-64 bg-white border border-slate-200 shadow-xl rounded-r py-2 z-50 animate-in fade-in duration-100">
+                            <div className="px-3 py-1 font-bold border-b border-slate-100 text-[11px] uppercase tracking-wider text-[#ea580c] font-display flex items-center gap-2">
+                              <DepartmentIcon iconName={cat.iconName} className="w-3.5 h-3.5 text-[#ea580c]" />
+                              <span className="truncate">{catName}</span>
+                            </div>
+                            <div className="py-1 max-h-72 overflow-y-auto">
+                              {subcategories.map((sub, idx) => (
+                                <button
+                                  key={idx}
+                                  type="button"
+                                  onClick={() => {
+                                    if (onSelectCategory) {
+                                      onSelectCategory(cat.subcategories[idx] || sub);
+                                    }
+                                    onToggleCategoryMenu();
+                                  }}
+                                  className="w-full text-left px-3 py-1.5 hover:bg-orange-50 hover:text-[#ea580c] text-slate-600 transition-colors text-xs cursor-pointer truncate block"
+                                >
+                                  {sub}
+                                </button>
+                              ))}
+                            </div>
+                            <div className="px-3 pt-2 pb-1 border-t border-slate-100 text-[10px] text-slate-400 flex justify-between font-mono-numbers">
+                              <span>{language === 'si' ? 'සත්‍යාපිත සැපයුම්කරුවන්' : 'Verified Suppliers'}</span>
+                              <span className="font-semibold text-slate-700">{cat.itemCount}+</span>
+                            </div>
+                          </div>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Center: Main Desktop Navigation Links */}

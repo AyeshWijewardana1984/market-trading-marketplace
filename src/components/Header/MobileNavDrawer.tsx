@@ -122,8 +122,10 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden md:hidden">
+    <div className="fixed inset-0 z-50 overflow-hidden lg:hidden">
       {/* Dimmed backdrop with blur */}
       <div
         onClick={onClose}
