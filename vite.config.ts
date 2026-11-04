@@ -11,6 +11,11 @@ export default defineConfig((): UserConfig => {
         '@': path.resolve(import.meta.dirname || '.', '.'),
       },
     },
+    build: {
+      target: 'esnext',
+      minify: 'esbuild',
+      chunkSizeWarningLimit: 2000,
+    },
     server: {
       port: 3000,
       host: '0.0.0.0',
