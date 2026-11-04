@@ -28,12 +28,12 @@ export const CouponBar: React.FC<CouponBarProps> = ({ onCopyCoupon, language = '
       </div>
 
       {/* Center Promotional Text */}
-      <div className="px-4 py-2 flex-1 flex items-center text-xs text-slate-700 font-medium truncate sm:pl-6">
-        <span className="truncate">
+      <div className="px-4 py-2.5 sm:py-2 flex-1 flex items-center text-xs text-slate-700 font-medium sm:pl-6">
+        <span className="leading-relaxed">
           {language === 'si'
             ? 'සති අන්ත වෙළඳ ප්‍රසාද දීමනාව · ක්ෂණික 20% ක වට්ටම් කූපනය: '
             : 'Flash weekend trade bonus · Instant 20% discount voucher: '}
-          <strong className="text-[#ea580c] font-bold font-mono-numbers text-sm bg-orange-100/80 border border-orange-200 px-1.5 py-0.5 rounded ml-1">
+          <strong className="text-[#ea580c] font-bold font-mono-numbers text-sm bg-orange-100/80 border border-orange-200 px-1.5 py-0.5 rounded ml-1 whitespace-nowrap">
             {couponCode}
           </strong>
         </span>

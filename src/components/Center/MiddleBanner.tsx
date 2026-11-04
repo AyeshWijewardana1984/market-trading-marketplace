@@ -35,12 +35,12 @@ export const MiddleBanner: React.FC<MiddleBannerProps> = ({ onShopNow, language 
       </div>
 
       {/* Left Special Offer 75% Badge */}
-      <div className="absolute top-4 left-4 z-20">
-        <div className="w-16 h-16 rounded-full bg-[#0c1524] border-2 border-dashed border-[#ea580c] flex flex-col items-center justify-center text-white shadow-xl rotate-[-12deg] group-hover:rotate-0 transition-transform">
+      <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-20">
+        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#0c1524] border-2 border-dashed border-[#ea580c] flex flex-col items-center justify-center text-white shadow-xl rotate-[-12deg] group-hover:rotate-0 transition-transform">
           <span className="text-[7px] uppercase font-bold text-slate-300 leading-none tracking-wider font-display">
             {language === 'si' ? 'විශේෂ' : 'SPECIAL'}
           </span>
-          <span className="text-[#ea580c] font-black text-sm leading-none mt-0.5 font-mono-numbers">
+          <span className="text-[#ea580c] font-black text-xs sm:text-sm leading-none mt-0.5 font-mono-numbers">
             75%
           </span>
           <span className="text-[7px] uppercase font-bold text-slate-300 leading-none font-display">
@@ -50,7 +50,7 @@ export const MiddleBanner: React.FC<MiddleBannerProps> = ({ onShopNow, language 
       </div>
 
       {/* Content Details */}
-      <div className="relative z-10 text-left pl-22 sm:pl-24 max-w-lg p-6">
+      <div className="relative z-10 text-left pl-18 sm:pl-24 max-w-lg p-4 sm:p-6">
         <h3 className="text-lg sm:text-2xl lg:text-3xl font-black text-slate-900 tracking-tight leading-snug drop-shadow-xs font-display">
           {language === 'si'
             ? 'ජැකාර්ඩ් සුඛෝපභෝගී මයික්‍රෝෆයිබර් හෝටල් තුවා'

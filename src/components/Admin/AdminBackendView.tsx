@@ -791,9 +791,40 @@ export const AdminBackendView: React.FC<AdminBackendViewProps> = ({
 
       {/* 2. Admin Workspace Layout: Left Sidebar + Main Work Area */}
       <div className="flex-1 flex flex-col md:flex-row min-h-0">
-        
-        {/* Left Sidebar Navigation Menu (250px) */}
-        <aside className="w-full md:w-60 bg-[#0b1120] border-r border-slate-800/80 p-3 sm:p-4 flex flex-col justify-between shrink-0">
+        {/* Mobile Horizontal Module Switcher (< md) */}
+        <div className="md:hidden bg-[#0b1120] border-b border-slate-800 p-2 flex items-center gap-1.5 overflow-x-auto scrollbar-none sticky top-12 z-30 touch-pan-x">
+          {[
+            { id: 'overview' as AdminSection, label: 'Dashboard', icon: LayoutDashboard },
+            { id: 'homepage' as AdminSection, label: 'Customizer', icon: Sliders },
+            { id: 'products' as AdminSection, label: `Products (${products.length})`, icon: Package },
+            { id: 'categories' as AdminSection, label: `Depts (${categories.length})`, icon: FolderTree },
+            { id: 'orders' as AdminSection, label: `Orders (${orders.length})`, icon: ShoppingBag },
+            { id: 'coupons' as AdminSection, label: `Coupons (${coupons.length})`, icon: Tag },
+            { id: 'users' as AdminSection, label: `Users (${usersList.length})`, icon: Users },
+            { id: 'api-docs' as AdminSection, label: 'API / Node', icon: Server },
+          ].map((item) => {
+            const Icon = item.icon;
+            const isCurrent = activeSection === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setActiveSection(item.id)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer shrink-0 font-display ${
+                  isCurrent
+                    ? 'bg-[#ea580c] text-white shadow-xs'
+                    : 'text-slate-400 hover:text-white bg-slate-900/60 border border-slate-800'
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                <span>{item.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Left Sidebar Navigation Menu for Desktop (>= md) */}
+        <aside className="hidden md:flex md:w-60 bg-[#0b1120] border-r border-slate-800/80 p-3 sm:p-4 flex-col justify-between shrink-0">
           <div className="space-y-1">
             <div className="px-3 py-1.5 text-[10px] font-bold text-slate-500 uppercase tracking-wider font-display">
               Management Modules

@@ -81,16 +81,16 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({
     <div className="bg-[#0c1524] border-b border-[#1b293e] sticky top-0 z-40 shadow-md">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 flex items-stretch justify-between h-10">
         {/* Left: Orange ALL DEPARTMENT Trigger Button (aligns with 280px sidebar) */}
-        <div className="w-[240px] sm:w-[260px] lg:w-[280px] shrink-0 relative">
+        <div className="flex-1 sm:flex-initial sm:w-[260px] lg:w-[280px] min-w-0 shrink-0 relative">
           <button
             onClick={onToggleCategoryMenu}
-            className="w-full h-full bg-[#ea580c] hover:bg-[#c2410c] text-white px-3 sm:px-4 font-bold text-xs uppercase tracking-wider flex items-center justify-between cursor-pointer transition-colors shadow-sm font-display select-none"
+            className="w-full h-full bg-[#ea580c] hover:bg-[#c2410c] text-white px-2.5 sm:px-4 font-bold text-xs uppercase tracking-wider flex items-center justify-between cursor-pointer transition-colors shadow-sm font-display select-none gap-1"
             aria-expanded={categoryMenuOpen}
             aria-label="Toggle all departments menu"
           >
-            <div className="flex items-center gap-2 truncate">
+            <div className="flex items-center gap-1.5 sm:gap-2 truncate min-w-0">
               <Menu className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
-              <span className="truncate">{t('allDepartmentsBtn', language)}</span>
+              <span className="truncate text-[11px] sm:text-xs">{t('allDepartmentsBtn', language)}</span>
             </div>
             <ChevronDown
               className={`w-4 h-4 shrink-0 transition-transform duration-200 ${
@@ -107,7 +107,7 @@ export const NavigationBar: React.FC<NavigationBarProps> = ({
                 className={`fixed inset-0 z-40 ${isHomepage ? 'lg:hidden' : 'block'}`}
                 onClick={onToggleCategoryMenu}
               />
-              <div className={`absolute top-full left-0 w-full bg-white border border-slate-200 border-t-0 shadow-2xl rounded-b-md z-50 animate-in fade-in duration-150 max-h-[75vh] overflow-y-auto ${
+              <div className={`absolute top-full left-0 w-full min-w-[240px] sm:min-w-[260px] lg:w-full bg-white border border-slate-200 border-t-0 shadow-2xl rounded-b-md z-50 animate-in fade-in duration-150 max-h-[75vh] overflow-y-auto ${
                 isHomepage ? 'lg:hidden' : 'block'
               }`}>
                 <ul className="divide-y divide-slate-100 text-xs text-slate-700 font-medium">

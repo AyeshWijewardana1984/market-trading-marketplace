@@ -148,7 +148,7 @@ export const MainHeader: React.FC<MainHeaderProps> = ({
               <button
                 type="button"
                 onClick={() => setCategoryDropdownOpen(!categoryDropdownOpen)}
-                className="h-full px-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 text-[11px] font-semibold flex items-center gap-1 cursor-pointer transition-colors max-w-[110px] rounded-l"
+                className="h-full px-2 sm:px-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 text-[10px] sm:text-[11px] font-semibold flex items-center gap-1 cursor-pointer transition-colors max-w-[85px] sm:max-w-[120px] rounded-l"
               >
                 <span className="truncate">{displayCategory}</span>
                 <ChevronDown className={`w-3 h-3 text-slate-400 shrink-0 transition-transform ${categoryDropdownOpen ? 'rotate-180' : ''}`} />
