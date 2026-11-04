@@ -45,7 +45,17 @@ export default function App() {
   // Global Marketplace View & State
   const [currentView, setCurrentView] = useState<'storefront' | 'admin'>('storefront');
   const [currency, setCurrency] = useState<Currency>('USD');
-  const [language, setLanguage] = useState<Language>('si');
+  const [language, setLanguage] = useState<Language>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem('marketplace_language');
+        if (stored === 'en' || stored === 'si') return stored;
+      } catch {
+        // ignore
+      }
+    }
+    return 'en';
+  });
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [categoryMenuOpen, setCategoryMenuOpen] = useState(true);
@@ -162,7 +172,24 @@ export default function App() {
   }, [language]);
 
   const handleToggleLanguage = () => {
-    setLanguage((prev) => (prev === 'si' ? 'en' : 'si'));
+    setLanguage((prev) => {
+      const next: Language = prev === 'si' ? 'en' : 'si';
+      try {
+        localStorage.setItem('marketplace_language', next);
+      } catch (e) {
+        // ignore
+      }
+      return next;
+    });
+  };
+
+  const handleLanguageChange = (newLang: Language) => {
+    setLanguage(newLang);
+    try {
+      localStorage.setItem('marketplace_language', newLang);
+    } catch (e) {
+      // ignore
+    }
   };
 
   // Modal Open Handlers
@@ -439,13 +466,13 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f6f8] text-slate-800 flex flex-col font-sans selection:bg-orange-100 selection:text-orange-900">
+    <div className="min-h-screen bg-[#f5f6f8] text-slate-800 flex flex-col font-sans selection:bg-orange-100 selection:text-orange-900 overflow-x-hidden w-full">
       {/* 1. Header & Top Bar */}
       <TopBar
         currentCurrency={currency}
         onCurrencyChange={setCurrency}
         language={language}
-        onLanguageChange={setLanguage}
+        onLanguageChange={handleLanguageChange}
         onOpenAuth={() => setAuthModalOpen(true)}
         onOpenTrackOrder={() => setTrackOrderOpen(true)}
         onOpenHelp={() => setHelpModalOpen(true)}
@@ -994,7 +1021,7 @@ export default function App() {
           setSearchQuery('');
         }}
         language={language}
-        onLanguageChange={setLanguage}
+        onLanguageChange={handleLanguageChange}
         currentCurrency={currency}
         onCurrencyChange={setCurrency}
         userEmail={userEmail}
